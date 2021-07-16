@@ -20,8 +20,7 @@ BLEBas  blebas;  // battery
 
 void loop() {
   // Forward data from HW Serial to BLEUART
-  while (Serial.available())
-  {
+  while (Serial.available()) {
     // Delay to wait for enough input, since we have a limited transmission buffer
     delay(2);
 
@@ -31,8 +30,7 @@ void loop() {
   }
 
   // Forward from BLEUART to HW Serial
-  while ( bleuart.available() )
-  {
+  while (bleuart.available()) {
     uint8_t ch;
     ch = (uint8_t) bleuart.read();
     Serial.write(ch);
