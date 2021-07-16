@@ -2,6 +2,7 @@
 // Darwin Clark
 //   for RipeLocker LLC
 
+// GOAL: Have this file be less than 100 lines
 
 // [X] Scan for the other BLE feather and see it 
 // [X] Send a custom message between the feathers
