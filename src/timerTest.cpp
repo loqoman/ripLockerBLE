@@ -1,6 +1,7 @@
 // Thought Exersize: Can you write the entire program with exslusivly callbacks
 
 #include <Arduino.h>
+#include <bluefruit.h>
 
 SoftwareTimer testTimer;
 // 1ms = 0.001s
@@ -19,7 +20,7 @@ void testTimer_callback(TimerHandle_t xTimerID){
 }
 
 void setup() {
-
+    //Bluefruit.begin();
     testTimer.begin(30000, testTimer_callback, whatever, true);
 
     testTimer.start();
@@ -27,10 +28,22 @@ void setup() {
     digitalToggle(PIN_LED2);
     delay(100);
 
-    waitForEvent(); // Would be at the end of the program
+    sd_power_mode_set(NRF_POWER_MODE_LOWPWR);
+
+        // Do nothing :)
+    __WFI();
+
+    digitalToggle(PIN_LED2);
+    delay(100);
+    digitalToggle(PIN_LED2);
+    delay(100);
+    digitalToggle(PIN_LED2);
+    delay(100);
+    digitalToggle(PIN_LED2);
+    delay(100);
 }
 
 void loop() {
-    // Do nothing :)
+
 
 }
