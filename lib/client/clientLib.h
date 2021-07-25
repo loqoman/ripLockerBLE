@@ -15,5 +15,5 @@ void UARTrxCallback(BLEClientUart& uart_svc);                   // When we get a
 
 
 // ===== Helper Functiosn ======
-void setupScanner(BLEClientUart inputUart); 
+void setupScanner(); 
 

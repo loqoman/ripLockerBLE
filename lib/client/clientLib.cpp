@@ -4,9 +4,10 @@
 
 extern BLEClientUart clientUart;
 // ===== Helper Functions ===== //
-void setupScanner(BLEClientUart inputUart) {
 
-    Serial.begin(115200);
+// TODO: Fix the lack of passing and the extern 
+void setupScanner() {
+
     delay(10);   // for nrf52840 with native usb
 
     Serial.println("Bluefruit52 Central BLEUART Example");
@@ -19,8 +20,8 @@ void setupScanner(BLEClientUart inputUart) {
     Bluefruit.setName("Bluefruit52 Central");
 
     // Init BLE Central Uart Serivce
-    inputUart.begin();
-    inputUart.setRxCallback(UARTrxCallback);
+    clientUart.begin();
+    clientUart.setRxCallback(UARTrxCallback);
 
     // Increase Blink rate to different from PrPh advertising mode
     Bluefruit.setConnLedInterval(250);

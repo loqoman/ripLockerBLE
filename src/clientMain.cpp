@@ -17,7 +17,8 @@ BLEClientUart clientUart;
 
 void setup() {
   // Do nothing :)
-  setupScanner(clientUart);
+  Serial.begin(115200);
+  setupScanner();
 }
 
 
