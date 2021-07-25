@@ -1,8 +1,7 @@
 #include <bluefruit.h>
-#include "messageLib.h"
+//#include "messageLib.h"
 
 // TODO: This seems like a c++-specific problem that can be solved in a much more gracious way
-BLEClientUart clientUart;
 
 // ===== Callbacks ===== // 
 // I *could* fit the callbacks inside the client object
@@ -16,5 +15,5 @@ void UARTrxCallback(BLEClientUart& uart_svc);                   // When we get a
 
 
 // ===== Helper Functiosn ======
-void setupScanner(); 
+void setupScanner(BLEClientUart inputUart); 
 

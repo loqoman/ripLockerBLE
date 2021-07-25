@@ -2,9 +2,9 @@
 #include <bluefruit.h>
 #include "clientLib.h"
 
+extern BLEClientUart clientUart;
 // ===== Helper Functions ===== //
-
-void setupScanner() {
+void setupScanner(BLEClientUart inputUart) {
 
     Serial.begin(115200);
     delay(10);   // for nrf52840 with native usb
@@ -19,8 +19,8 @@ void setupScanner() {
     Bluefruit.setName("Bluefruit52 Central");
 
     // Init BLE Central Uart Serivce
-    clientUart.begin();
-    clientUart.setRxCallback(UARTrxCallback);
+    inputUart.begin();
+    inputUart.setRxCallback(UARTrxCallback);
 
     // Increase Blink rate to different from PrPh advertising mode
     Bluefruit.setConnLedInterval(250);
@@ -42,7 +42,7 @@ void setupScanner() {
     Bluefruit.Scanner.start(0);                   // // 0 = Don't stop scanning after n seconds
 }
 
-// ====== Callbacks ====== //
+// ====== Callbacks ====== //>
 /**
  * Callback invoked when scanner pick up an advertising data
  * @param report Structural advertising data
@@ -50,7 +50,7 @@ void setupScanner() {
 void scanCallback(ble_gap_evt_adv_report_t* report) {
       // Check if advertising contain BleUart service
     if (Bluefruit.Scanner.checkReportForService(report, clientUart) ) {
-        Serial.print("BLE UART service detected. Connecting ... ");
+        Serial.println("BLE UART service detected. Connecting ... ");
 
         // Connect to device with bleuart service in advertising
         Bluefruit.Central.connect(report);
@@ -69,8 +69,8 @@ void scanCallback(ble_gap_evt_adv_report_t* report) {
 void connectCallback(uint16_t conn_handle) {     // When we make a new connection
     // TODO: Revisit the usefullness of the print statements
     Serial.println("Connected");
-    Serial.print("Dicovering Device Information ... ");
-    Serial.print("Discovering BLE Uart Service ... ");
+    Serial.println("Dicovering Device Information ... ");
+    Serial.println("Discovering BLE Uart Service ... ");
 
 
     // Need a BLEClientUART object here
@@ -105,14 +105,14 @@ void disconnectCallback(uint16_t conn_handle, uint8_t reason) {
 /**
  * Callback invoked when uart received data
  * @param uart_svc Reference object to the service where the data 
- * arrived. In this example it is clientUart
+ * arrived. 
  */
 void UARTrxCallback(BLEClientUart& uart_svc) {   // When we get a message
 
   Serial.print("[RX]: ");
   
   while (uart_svc.available() ) {
-    Serial.print((char) uart_svc.read() );
+    Serial.print((char) uart_svc.read());
   }
 
 

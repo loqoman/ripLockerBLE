@@ -1,7 +1,8 @@
 
 #include <Arduino.h>
-#include "peripheralLib.h"
 #include <bluefruit.h>
+
+#include "peripheralLib.h"
 #include "messageLib.h"
 
 // ===== Callbacks ===== // 
@@ -22,6 +23,18 @@ void periphDisconnectCallback(uint16_t conn_handle, uint8_t reason) {
 
     Serial.println();
     Serial.print("Disconnected, reason = 0x"); Serial.println(reason, HEX);
+}
+
+    // When we(peripheral) get a message
+void UARTrxCallback(BLEClientUart& uart_svc) {
+    Serial.print("[RX]: ");
+
+    while (uart_svc.available() ) {
+        Serial.print((char) uart_svc.read() );
+    }
+
+
+    Serial.println();
 }
 
 // ====== Helper Function ====== // 
