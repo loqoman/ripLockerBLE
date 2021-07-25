@@ -11,7 +11,16 @@
 #include <bluefruit.h>
 #include "clientLib.h"
 
-// N.B: clientUart comes from clientLib.h
+#define DEVICE "client"
+
+BLEClientUart clientUart;
+
+void setup() {
+  // Do nothing :)
+  setupScanner(clientUart);
+}
+
+
 
 void loop() {
   if (Bluefruit.Central.connected() ) {
@@ -31,7 +40,3 @@ void loop() {
   }
 }
 
-
-void setup() {
-  // Do nothing :)
-}

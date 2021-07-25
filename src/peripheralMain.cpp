@@ -14,6 +14,7 @@
 #include <bluefruit.h>
 #include "peripheralLib.h"
 
+#define DEVICE "peripheral"
 // Peripheral uart service
 BLEUart bleuart;
 String myMessage; // TODO
@@ -21,8 +22,8 @@ String myMessage; // TODO
 bool awake; 
 
 void setup() {
-  Serial.begin(115200);
-  setupAdvertising(bleuart);
+	Serial.begin(115200);
+	setupAdvertising(bleuart);
 }
 
 void loop() {
@@ -30,10 +31,9 @@ void loop() {
 
   // Just send *something*
   // TODO: Do some incrementing later
-  while (bleuart.available()) {
-    delay(2000);
-    const char* str = "Test From Periph";
-
-    bleuart.write(str);
-  }
+	while (bleuart.available()) {
+		delay(2000);
+		const char* str = "Test From Periph";
+    	bleuart.write(str);
+    }
 }
