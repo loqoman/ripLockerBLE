@@ -16,28 +16,19 @@
 BLEClientUart clientUart;
 
 void setup() {
-  // Do nothing :)
-  Serial.begin(115200);
-  setupScanner();
+	// Do nothing :)
+	Serial.begin(115200);
+	setupScanner();
 }
 
 
 
 void loop() {
-  if (Bluefruit.Central.connected() ) {
-    // Not discovered yet
-    if (clientUart.discovered() ) {
-      // Discovered means in working state
-      // Get Serial input and send to Peripheral
-      if (Serial.available() ) {
-        delay(2); // delay a bit for all characters to arrive
-        
-        char str[20+1] = { 100 };
-        // Serial.readBytes(str, 20);
-        
-        clientUart.print(str);
-      }
-    }
-  }
+	// Do nothing :)
+	delay(1000);
+	Serial.print("avaliable() is at: "); Serial.println(clientUart.available());
+	while (clientUart.available() ) {
+		Serial.print((char) clientUart.read());
+	}
 }
 

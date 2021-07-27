@@ -22,18 +22,19 @@ String myMessage; // TODO
 bool awake; 
 
 void setup() {
-	Serial.begin(115200);
-	setupAdvertising(bleuart);
+    Serial.begin(115200);
+    setupAdvertising();
 }
 
 void loop() {
-  // This loop was initally a 'forwarder': [HW Object (Sensor)] -> [BLE periph] -> [BLE Client]
+  	// This loop was initally a 'forwarder': [HW Object (Sensor)] -> [BLE periph] -> ||wall||  [BLE Client]
 
-  // Just send *something*
-  // TODO: Do some incrementing later
-	while (bleuart.available()) {
+  	// Just send *something*
+  	// TODO: Do some incrementing later
+	while (true) {
 		delay(2000);
 		const char* str = "Test From Periph";
-    	bleuart.write(str);
-    }
+		bleuart.write(str);
+		digitalToggle(PIN_LED2); // TODO: Time this seperate from connection status LED
+	}
 }
