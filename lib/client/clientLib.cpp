@@ -77,21 +77,19 @@ void scanCallback(ble_gap_evt_adv_report_t* report) {
  */
 void connectCallback(uint16_t conn_handle) {     // When we make a new connection
     // TODO: Revisit the usefullness of the print statements
-    Serial.println("Connected");
-    Serial.println("Dicovering Device Information ... ");
-    Serial.println("Discovering BLE Uart Service ... ");
-
+    Serial.println("[Client] Connected");
+    Serial.println("[Client] Discovering BLE Uart Service ... ");
 
     // Need a BLEClientUART object here
     if (clientUart.discover(conn_handle) ) {
-        Serial.println("Found it");
+        Serial.println("[Client] Found BLE Uart Service. ");
 
-        Serial.println("Enable TXD's notify");
+        Serial.println("[Client] Enable TXD's notify");
         clientUart.enableTXD();
 
-        Serial.println("Ready to receive from peripheral");
+        Serial.println("[Client] Ready to receive from peripheral");
     } else {
-        Serial.println("Found NONE");
+        Serial.println("[Client] Found NONE");
 
         // disconnect since we couldn't find bleuart service
         Bluefruit.disconnect(conn_handle);
@@ -108,7 +106,7 @@ void disconnectCallback(uint16_t conn_handle, uint8_t reason) {
 	(void) conn_handle;
 	(void) reason;
 	
-	Serial.print("Disconnected, reason = 0x"); Serial.println(reason, HEX);
+	Serial.print("[Client] Disconnected, reason = 0x"); Serial.println(reason, HEX);
 }
 
 /**
@@ -118,7 +116,7 @@ void disconnectCallback(uint16_t conn_handle, uint8_t reason) {
  */
 void UARTrxCallback(BLEClientUart& uart_svc) {   // When we get a message
 
-	Serial.print("[RX]: ");
+	Serial.print("[Client][RX]: ");
 	
 	while (uart_svc.available() ) {
 		Serial.print((char) uart_svc.read());

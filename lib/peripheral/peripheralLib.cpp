@@ -15,7 +15,7 @@ void periphConnectCallback(uint16_t conn_handle) {
     char peer_name[32] = { 0 };
     connection->getPeerName(peer_name, sizeof(peer_name));
 
-    Serial.print("[Prph] Connected to ");
+    Serial.print("[Periph] Connected to ");
     Serial.println(peer_name);
 }
 
@@ -24,12 +24,12 @@ void periphDisconnectCallback(uint16_t conn_handle, uint8_t reason) {
     (void) reason;
 
     Serial.println();
-    Serial.print("Disconnected, reason = 0x"); Serial.println(reason, HEX);
+    Serial.print("[Periph] Disconnected, reason = 0x"); Serial.println(reason, HEX);
 }
 
     // When we(peripheral) get a message
 void UARTrxCallback(BLEClientUart& uart_svc) {
-    Serial.print("[RX]: ");
+    Serial.print("[Periph][RX]: ");
 
     while (uart_svc.available() ) {
         Serial.print((char) uart_svc.read() );
