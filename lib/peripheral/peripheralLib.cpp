@@ -5,6 +5,8 @@
 #include "peripheralLib.h"
 #include "messageLib.h"
 
+extern BLEUart bleuart;
+
 // ===== Callbacks ===== // 
 void periphConnectCallback(uint16_t conn_handle) {
 // Get the reference to current connection
@@ -38,7 +40,7 @@ void UARTrxCallback(BLEClientUart& uart_svc) {
 }
 
 // ====== Helper Function ====== // 
-void setupAdvertising(BLEUart inputUARTService) {
+void setupAdvertising() {
     Bluefruit.autoConnLed(true);
     Bluefruit.configPrphBandwidth(BANDWIDTH_MAX);
 
@@ -56,7 +58,7 @@ void setupAdvertising(BLEUart inputUARTService) {
     Bluefruit.Periph.setConnectCallback(periphConnectCallback);
     Bluefruit.Periph.setDisconnectCallback(periphDisconnectCallback);
 
-    inputUARTService.begin();
+    bleuart.begin();
 
     Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
     Bluefruit.Advertising.addTxPower();
@@ -64,7 +66,7 @@ void setupAdvertising(BLEUart inputUARTService) {
 
 
     // Include bleuart 128-bit uuid
-    Bluefruit.Advertising.addService(inputUARTService);
+    Bluefruit.Advertising.addService(bleuart);
 
     Bluefruit.ScanResponse.addName();
 

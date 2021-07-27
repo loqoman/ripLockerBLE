@@ -9,4 +9,4 @@ void UARTrxCallback(BLEClientUart& uart_svc);   // When we(peripheral) get a mes
 
 // ===== Helper Functions ===== //
 
-void setupAdvertising(BLEUart inputUARTService);
+void setupAdvertising();

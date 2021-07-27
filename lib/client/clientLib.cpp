@@ -1,7 +1,15 @@
 // Callsbacks and Helper functions
 #include <bluefruit.h>
 #include "clientLib.h"
+#include <Arduino.h>
 
+
+// N.B This is needed to tell the compiler that clientUart is defined somewhere *else*, and to treat all references
+//  to clientUart in this file are acoutally defined somewhere else
+
+// In general, it's a bad idea to simply toss 'extern' in front of objects that you need access to (I.E what we did here)
+//    This is because it's not immediately obvious fromt he function call (setupScanner/scanCallback) that they even NEED or operate on the
+//    clientUart object, whereas if we passed it to the function, it's clear that some operation occurs with the input 
 extern BLEClientUart clientUart;
 // ===== Helper Functions ===== //
 
@@ -97,10 +105,10 @@ void connectCallback(uint16_t conn_handle) {     // When we make a new connectio
  */
 
 void disconnectCallback(uint16_t conn_handle, uint8_t reason) {
-  (void) conn_handle;
-  (void) reason;
-  
-  Serial.print("Disconnected, reason = 0x"); Serial.println(reason, HEX);
+	(void) conn_handle;
+	(void) reason;
+	
+	Serial.print("Disconnected, reason = 0x"); Serial.println(reason, HEX);
 }
 
 /**
@@ -110,14 +118,12 @@ void disconnectCallback(uint16_t conn_handle, uint8_t reason) {
  */
 void UARTrxCallback(BLEClientUart& uart_svc) {   // When we get a message
 
-  Serial.print("[RX]: ");
-  
-  while (uart_svc.available() ) {
-    Serial.print((char) uart_svc.read());
-  }
+	Serial.print("[RX]: ");
+	
+	while (uart_svc.available() ) {
+		Serial.print((char) uart_svc.read());
+	}
 
-
-  Serial.println();
-
+	Serial.println();
 }
 
