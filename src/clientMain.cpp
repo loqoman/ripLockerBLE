@@ -25,10 +25,5 @@ void setup() {
 
 void loop() {
 	// Do nothing :)
-	delay(1000);
-	Serial.print("avaliable() is at: "); Serial.println(clientUart.available());
-	while (clientUart.available() ) {
-		Serial.print((char) clientUart.read());
-	}
 }
 
