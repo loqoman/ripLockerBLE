@@ -9,16 +9,18 @@ const String DEVICE = "PERIPHERAL";
 #ifdef CLIENT
 const String DEVICE = "CLIENT";
 #endif
-// E.G messageType =
+
 // Caps for struct?
 int decodingBuffer[3];
 
+// It is implied that each message is sourced from the client and is responded to by the peripheral
+// A message has two timestamps assoicated with it: The time it was sent and the time it was responded to
 struct Message {
     // Pulled directly from the README
     enum messageType {REQBATT, KEEPALIVE, REQREAD, REQRUONDTRIP};
 
-    double timeCreated;
-    double timeReceived;
+    double timeSent;        // in ms
+    double timeResponded;   // in ms
     double payload; // I.E 'data'
 
     messageType type;
@@ -26,30 +28,34 @@ struct Message {
 
 
     // QUESTION: Should there be constructors that are defiend without a known usecase??
-    Message(double time) {timeCreated = time;};
-    Message(double time, messageType inputType) {timeCreated = time; type = inputType;};
+    Message(double time) {timeSent = time;};
+    Message(double time, messageType inputType) {timeSent = time; type = inputType;};
 
 
     String encodeToWire(double myTime) {
         // TODO: Struct --> String 
+        timeSent = myTime;
 
         // FORMAT   : "[TX:<DEVICE>][type:<messageType>][payload:<payload>]"
         // EXAMPLE  : "[TX:client][type:REQBATT][payload:0]"
     
         // Each part individually
-        String identificationStr = String("[TX:") + String(DEVICE) + String("]");
+        // This code is scaleable -- Whenever we add a new charateristic we just add another line here
+        String identificationStr = String("[TX:") + DEVICE + String("]");
+
+        String timeStr = String("[sentTime:") + timeSent + String("]");
         String typeStr = String("[type:") + String(type) + String("]");
         String payloadStr = String("[payload:") + String(payload) + String("]");
 
         // Final Message
-        String finalMessage = identificationStr + typeStr + payloadStr;
+        String finalMessage = identificationStr + timeStr + typeStr + payloadStr;
         
         return finalMessage;
 
     }
 
-    Message decodeFromWire(String inputStringFromWire) {
-        // TODO: Have checking
+    static Message decodeFromWire(String inputStringFromWire) {
+        // TODO: Check that the decoder of the message is not the #DEVICE as the message src.
         // Oh boy this one's gonna be interesting
     
         // Create the object we're going to return
@@ -57,14 +63,15 @@ struct Message {
         String deviecStr;
         String typeStr;
         String payloadStr;
+        String timeSent;
 
         // WRITE BETTER CODE
-        while (inputStringFromWire.length() >= 0) {
+        while (inputStringFromWire.length() > 0) {
             int startLoc = inputStringFromWire.indexOf(":");
             int endLoc = inputStringFromWire.indexOf("]");
         
             String paramTypeStr = inputStringFromWire.substring(1, startLoc);
-            String paramBodyStr = inputStringFromWire.substring(startLoc, endLoc);
+            String paramBodyStr = inputStringFromWire.substring(startLoc+1, endLoc);
 
             // TODO: There's almost 100% a better way to do with with an enum switch satement
             if (paramTypeStr == String("TX")) {
@@ -73,14 +80,25 @@ struct Message {
                 typeStr = paramBodyStr;
             } else if (paramTypeStr == String("payload")) {
                 payloadStr = paramBodyStr;
-            } // This is where another paramater would go when created
+            } else if (paramTypeStr == String("sentTime")) {
+                timeSent = paramBodyStr;
+            } else  { // This is where another paramater would go when created
+                String error = String("[") + DEVICE + String("]") + String(" Error when decoding string. Found an unknown paramType:");
+                Serial.println(error);
+                Serial.println(paramTypeStr);
+            }    
 
             // "pops" the firest paramater in the message off the message
-            inputStringFromWire.remove(0, paramBodyStr.length() + 3);
+            inputStringFromWire.remove(0, endLoc + 1); // pop() characters from 0 to the end of the body
 
-        }
+        };
 
+        returnDecoded.timeSent = timeSent.toFloat();
+        returnDecoded.payload = payloadStr.toFloat();
+        returnDecoded.type = static_cast<messageType>(typeStr.toInt()); // Casts the int to an enum messageType
+        
         
 
+        return returnDecoded;
     }
 };

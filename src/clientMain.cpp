@@ -10,15 +10,26 @@
 #include <Arduino.h>
 #include <bluefruit.h>
 #include "clientLib.h"
+#include "messageLib.h"
 
 #define DEVICE "client"
 
 BLEClientUart clientUart;
 
+Message testMsg(millis());
 void setup() {
 	// Do nothing :)
 	Serial.begin(115200);
 	setupScanner();
+
+	// The enum is really just a 
+	testMsg.type = Message::messageType::KEEPALIVE;
+	testMsg.payload = 2;
+
+	Serial.println(testMsg.encodeToWire(millis()));
+	String testDecode = testMsg.encodeToWire(millis());
+	Message postWireMessage = Message::decodeFromWire(testDecode); 
+	Serial.println(postWireMessage.encodeToWire(millis())); 
 }
 
 
