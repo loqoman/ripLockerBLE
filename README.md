@@ -7,6 +7,13 @@ RipeLockerBLE is a research embedded design project done by Darwin Clark during 
 
 ## A Full-System View
 
+<div>
+<p align="center">
+ <strong>Full-System Overview Flowchat V2</strong> 
+ <br>
+ <img src="https://raw.githubusercontent.com/loqoman/ripeLockerBLE/main/docs/assets/HighLevelDiagramV2.png" alt="Full-System Overview Flowchat V2" width="500px"/>
+ <br>
+</p>
 
 ## Individual Modules
 ### Client (I.E Server) (What goes outside the chamber)
