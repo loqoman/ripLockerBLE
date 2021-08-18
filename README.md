@@ -10,20 +10,47 @@
     - CPU is always on
 - Has constant conncetion to the RaspberryPi (working name for the device controlling the client)
 
+#### Serial Control of the Client
+
+**Debugging**
+Assuming that the assoicated control program / setup is on the fritz, a more bare-bones control scheme can be used with the linux tool `screen`. With the client board plugged into the Raspberry Pi via USB, running the following command will open a terminal emulation of the serial port.
+
+```
+screen /dev/ttyUSB0 115200
+```
+
+From there, messages can be simply typed into the terminal to be sent to the client. There are a couple of caviats to this however:
+    - The default timeout for `screen` may inturrupt you when typing mid-message, resulting in a botched message to the client
+    - 
+
 ### Peripheral (What goes IN the chamber)
 
-### Message Structure
+- Connected to the MODBUS chip.
+- Required to sleep for extended periods of time
+
+
+
+### Message Liberary
 
 **Order of Operations**
 
 1. Client scans for BLE beacons with the bleUART service
 2. Client makes contact (`connect()`) with the peripheral
 3. Client logs the connection
-4. 
+4. Client sends required messages to peripheral
+    - (Sample Message Order)
+    1. KEEPALIVE
+    2. REQBATT
+    3. REQREAD
+    4. SETSLEEPTIME
+    5. GOTOSLEEP
+5. Peripheral disconnects from client
+6. Client continues to active scan waiting for peripheral to wake up
 
 **Types of Messages**
 
 - Set Next Wakeup
+    - Sets the time that will be used in the `softwareTimer()` inturrupt once the peripheral receives the "Go to Sleep" message
 - Keep Alive
     - Just exists to see if there is someone on the other end. Acts as a verifcation of the Message format.
 - Request for Reading
@@ -33,11 +60,11 @@
 - Request Time of Transit 
     - Sending a time to the peripheral 
     - Asking the peripheral to reutrn the time of travel for the message
+    - This message will likely be collated with the "Keep Alive" message
+- Go to Sleep
+    - Instructus the peripheral that there is no more information needed, and to re-enter a sleep mode.
+        - N.B, "Go to Sleep" is different from "Set Next Wakeup
 
-
-**Communication Protocol**
-
-- The primary method of communication (A smalls straw) is through `bleuart.write(String input)`. We have to be able to break that down all the complicated classes / objects for `peripheralManager` between `clientManager`. Assembling a `struct` or a `Class` on either end is not very useful as a communication framework.
 
 # Code
 
