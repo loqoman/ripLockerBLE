@@ -1,5 +1,14 @@
-# ripLockerBLE
+# RipeLockerBLE
 
+## Introduction
+
+RipeLockerBLE is a research embedded design project done by Darwin Clark during the summer of 2021 for [RipeLocker LLC](https://ripelocker.com/). The goal of this project was primarily to act as real-world design experience, however it also showed an alternative design path to solve similar power and communication requirements.
+
+
+## A Full-System View
+
+
+## Individual Modules
 ### Client (I.E Server) (What goes outside the chamber)
 
 - The part that controls the periphral
