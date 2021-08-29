@@ -17,3 +17,7 @@ void UARTrxCallback(BLEClientUart& uart_svc);                   // When we get a
 // ===== Helper Functiosn ======
 void setupScanner(); 
 
+bool checkForSerial(); 
+
+// Returns a string which plays well with messagelib
+String readSerial();
