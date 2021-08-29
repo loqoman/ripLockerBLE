@@ -1,5 +1,7 @@
 // Thought Exersize: Can you write the entire program with exslusivly callbacks
 
+// Coding the peripheral to send a ping through modbus
+
 #include <Arduino.h>
 #include <bluefruit.h>
 

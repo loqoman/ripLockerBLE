@@ -13,13 +13,21 @@
 #include <Arduino.h>
 #include <bluefruit.h>
 #include "peripheralLib.h"
+#include "messageLib.h"
 
 #define DEVICE "peripheral"
 // Peripheral uart service
 BLEUart bleuart;
 String myMessage; // TODO
 
-bool awake; 
+char messageCharArray[100];
+
+int messageCharArraySize = sizeof(messageCharArray);
+
+Message testMsg(millis());
+
+bool awake; // Keeping better track of what state the peripheral is in 
+double timeToSleep;
 
 void setup() {
     Serial.begin(115200);
@@ -27,14 +35,11 @@ void setup() {
 }
 
 void loop() {
-  	// This loop was initally a 'forwarder': [HW Object (Sensor)] -> [BLE periph] -> ||wall||  [BLE Client]
+    // We've just turned on from a power reset. 
+    // We're either:
+    //      - Had our power cut suddenly during mid-operatio
+    //      - Are just starting our operation
 
-  	// Just send *something*
-  	// TODO: Do some incrementing later
-	while (true) {
-		delay(2000);
-		const char* str = "Test From Periph";
-		bleuart.write(str);
-		digitalToggle(PIN_LED2); // TODO: Time this seperate from connection status LED
-	}
+    // We nede to advertise and get a connection, then stay awake until we're told to go to sleep 
+
 }
