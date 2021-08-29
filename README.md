@@ -1,12 +1,12 @@
 # RipeLockerBLE
 
 ## Introduction
-
+---
 RipeLockerBLE is a research embedded design project done by Darwin Clark during the summer of 2021 for [RipeLocker LLC](https://ripelocker.com/). The goal of this project was primarily to act as real-world design experience, however it also showed an alternative design path to solve similar power and communication requirements.
 
 
 ## A Full-System View
-
+---
 <div>
 <p align="center">
  <strong>Full-System Overview Flowchat V2</strong> 
@@ -16,6 +16,7 @@ RipeLockerBLE is a research embedded design project done by Darwin Clark during 
 </p>
 
 ## Individual Modules
+---
 ### Client (I.E Server) (What goes outside the chamber)
 
 - The part that controls the periphral
@@ -55,11 +56,11 @@ From there, messages can be simply typed into the terminal to be sent to the cli
 3. Client logs the connection
 4. Client sends required messages to peripheral
     - (Sample Message Order)
-    1. KEEPALIVE
-    2. REQBATT
-    3. REQREAD
-    4. SETSLEEPTIME
-    5. GOTOSLEEP
+    1. `KEEPALIVE`
+    2. `REQBATT`
+    3. `REQREAD`
+    4. `SETSLEEPTIME`
+    5. `GOTOSLEEP`
 5. Peripheral disconnects from client
 6. Client continues to active scan waiting for peripheral to wake up
 
@@ -84,3 +85,9 @@ From there, messages can be simply typed into the terminal to be sent to the cli
 
 # Code
 
+## Formatting
+
+The codebase employs the following formatting decisions:
+
+- Tabs: 4 spaces
+- Brackets: Same line
