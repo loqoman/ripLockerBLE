@@ -18,8 +18,8 @@ void setupScanner() {
 
     delay(10);   // for nrf52840 with native usb
 
-    Serial.println("Bluefruit52 Central BLEUART Example");
-    Serial.println("-----------------------------------\n");
+    Serial.println("[CLIENT] Loqoman nrf52 ripeLocker BLE Client [CLINET]");
+    Serial.println("-----------------------------------------------------\n");
 
     // Initialize Bluefruit with maximum connections as Peripheral = 0, Central = 1
     // SRAM usage required by SoftDevice will increase dramatically with number of connections
@@ -116,12 +116,45 @@ void disconnectCallback(uint16_t conn_handle, uint8_t reason) {
  */
 void UARTrxCallback(BLEClientUart& uart_svc) {   // When we get a message
 
+    // Serial.print("[Client][Debug]: Available: ");
+    // Serial.println(String(uart_svc.available()));
 	Serial.print("[Client][RX]: ");
-	
-	while (uart_svc.available() ) {
+    // TODO: Revisit this number as messages grow in size. This is very very bad because this will lead us to only partially read messages
+    // IDEA: add brackets to either end of the message to veryify the start and end, then implement code that waits until the next read
+	if (uart_svc.available() < 65) {
+        return;
+    }
+
+	while (uart_svc.available()) {
 		Serial.print((char) uart_svc.read());
 	}
 
 	Serial.println();
 }
 
+
+// CheckForSerial()
+// Run periodically by the CLIENT to see if there is a new message from the rasperry pi. Keep in mind
+//  the client has no restructions on being awake, but we want to be clear about when we are checknig versus doing something else
+//  
+bool checkForSerial() {
+    
+    delay(2); // delay a bit for all characters to arrive (If they're there at all)
+
+    if (Serial.available() > 0) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+// Reads everything out of the serial buffer
+String readSerial() {
+    delay(10);
+
+    char str[100] = {0};
+    Serial.readBytes(str, 100); // Reads INTO str
+
+    return String(str);
+}
